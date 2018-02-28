@@ -1,6 +1,7 @@
 ﻿package it.menzani.groupchat.client.view.chat;
 
 import it.menzani.groupchat.client.App;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -49,6 +50,28 @@ public final class ChatView extends AnchorPane {
         getChildren().addAll(usersLabel, messagesVBox);
 
         setUsers(Collections.emptyList());
+        generateLoad();
+    }
+
+    private void generateLoad() {
+        Platform.runLater(() -> {
+            final List<String> users = List.of("Ezechiele", "Gertrude", "Amilcare", "Camilla", "Barbara", "Marco",
+                    "Gioacchino", "Amelia", "Narciso", "Lollo", "Carla", "Valentina", "John", "Bill");
+            setUsers(users);
+
+            final String[] messages = {
+                    "Great care should be taken", "to ensure proper attribution is given.", "Some care must be exercised when doing this.",
+                    "Performance may suffer otherwise.", "好，休是休士顿，我们这里已经出问题了",
+                    "Miracle skin cream", "Join a Stellar revolution!", "Di cosa sono fatti i mattoni?",
+                    "Siamo fatti della stessa materia", "di cui sono fatti i sogni.", "La consistenza dei mattoni può spiegare molte cose...",
+                    "per assicurare il legno del bastoncino", "That's working exactly as intended!",
+                    "Cosa succede se improvvisamente ogni goccia d'acqua", "这就是斯巴达!", "Sono completamente daccordo con il messaggio precedente.",
+                    "I completely agree with the previous message.", "L'acqua sarà l'oro del futuro."
+            };
+            for (int i = 0; i < 7; i++) {
+                addMessage("System", messages[i]);
+            }
+        });
     }
 
     public void addMessage(String sender, String message) {
