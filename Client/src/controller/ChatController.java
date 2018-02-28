@@ -8,6 +8,7 @@ public final class ChatController implements Controller {
 
     @Override
     public Parent createRoot() {
+        view.setMessageSendAction(message -> view.addMessage("You", message));
         return view;
     }
 }

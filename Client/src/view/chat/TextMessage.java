@@ -23,11 +23,11 @@ final class TextMessage extends TextArea {
 
     // https://stackoverflow.com/a/37007833/3453226
     private double calculateHeight(String text) {
-        Text textControl = new Text(text);
-        textControl.setWrappingWidth(ChatView.WIDTH);
-        textControl.setFont(getFont());
-        Parent pane = new StackPane(textControl);
-        pane.layout();
-        return textControl.getLayoutBounds().getHeight() + 30D;
+        Text control = new Text(text);
+        control.setWrappingWidth(ChatView.WIDTH);
+        control.setFont(getFont());
+        Parent parent = new StackPane(control);
+        parent.layout();
+        return control.getLayoutBounds().getHeight() + 30D;
     }
 }

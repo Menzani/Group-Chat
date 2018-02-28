@@ -3,9 +3,12 @@ package it.menzani.groupchat.client.view.chat;
 import it.menzani.groupchat.client.App;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
@@ -16,19 +19,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class ChatView extends AnchorPane {
+    private static final String LINE_SEPARATOR = System.lineSeparator();
     static final double WIDTH = 700D;
 
     private final Label usersLabel = new Label();
     private final VBox messageHistoryVBox = new VBox();
     private final ScrollPane messageHistoryScrollPane = new ScrollPane(messageHistoryVBox);
-    private final TextField messageTextField = new TextField();
+    private final TextArea messageTextArea = new TextArea();
 
     public ChatView() {
+        createChildren();
+        createListeners();
+
+        setUsers(Collections.emptyList());
+        generateLoad();
+    }
+
+    private void createChildren() {
         usersLabel.setFont(App.CUSTOM_FONT);
         usersLabel.setTextAlignment(TextAlignment.CENTER);
         usersLabel.setWrapText(true);
         usersLabel.setMaxHeight(95D);
         usersLabel.setPadding(new Insets(2D));
+        usersLabel.setFocusTraversable(true); // Prevents messageTextArea from getting the focus on load.
         usersLabel.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DOTTED, null, null)));
         setTopAnchor(usersLabel, 2D);
         setLeftAnchor(usersLabel, 100D);
@@ -37,10 +50,13 @@ public final class ChatView extends AnchorPane {
         messageHistoryScrollPane.setFitToWidth(true);
         messageHistoryScrollPane.getStylesheets().add("whiteScrollPane.css");
 
-        messageTextField.setFont(App.CUSTOM_FONT);
-        VBox.setMargin(messageTextField, new Insets(5D));
+        messageTextArea.setFont(App.CUSTOM_FONT);
+        messageTextArea.setPrefRowCount(1);
+        messageTextArea.setPromptText("Write your message here and press Enter");
+        messageTextArea.setWrapText(true);
+        VBox.setMargin(messageTextArea, new Insets(5D));
 
-        VBox messagesVBox = new VBox(messageHistoryScrollPane, messageTextField);
+        VBox messagesVBox = new VBox(messageHistoryScrollPane, messageTextArea);
         messagesVBox.setMaxHeight(500D);
         setBottomAnchor(messagesVBox, 0D);
         setLeftAnchor(messagesVBox, 0D);
@@ -49,9 +65,14 @@ public final class ChatView extends AnchorPane {
         setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
         setPrefSize(WIDTH, 600D);
         getChildren().addAll(usersLabel, messagesVBox);
+    }
 
-        setUsers(Collections.emptyList());
-        generateLoad();
+    private void createListeners() {
+        messageTextArea.focusedProperty().addListener(observable -> usersLabel.setFocusTraversable(false));
+        messageTextArea.setOnKeyReleased(event -> {
+            if (event.getCode() != KeyCode.ESCAPE) return;
+            messageTextArea.clear();
+        });
     }
 
     private void generateLoad() {
@@ -61,13 +82,14 @@ public final class ChatView extends AnchorPane {
             setUsers(users);
 
             final String[] messages = {
-                    "Great care should be taken", "to ensure proper attribution is given.", "Some care must be exercised when doing this.",
-                    "Performance may suffer otherwise.", "好，休是休士顿，我们这里已经出问题了",
+                    "Great care should be taken", "to ensure proper attribution is given.",
+                    "Some care must be exercised when doing this.", "Performance may suffer otherwise.",
+                    "好，休是休士顿，我们这里已经出问题了", "Sono completamente daccordo con il messaggio precedente.",
                     "Miracle skin cream", "Join a Stellar revolution!", "Di cosa sono fatti i mattoni?",
-                    "Siamo fatti della stessa materia", "di cui sono fatti i sogni.", "La consistenza dei mattoni può spiegare molte cose...",
-                    "per assicurare il legno del bastoncino", "That's working exactly as intended!",
-                    "Cosa succede se improvvisamente ogni goccia d'acqua", "这就是斯巴达!", "Sono completamente daccordo con il messaggio precedente.",
-                    "I completely agree with the previous message.", "L'acqua sarà l'oro del futuro."
+                    "Siamo fatti della stessa materia", "di cui sono fatti i sogni.",
+                    "La consistenza dei mattoni può spiegare molte cose...", "per assicurare il legno del bastoncino",
+                    "That's working exactly as intended!", "Cosa succede se improvvisamente ogni goccia d'acqua",
+                    "这就是斯巴达!", "I completely agree with the previous message.", "L'acqua sarà l'oro del futuro."
             };
             for (int i = 0; i < 7; i++) {
                 addMessage("System", messages[i]);
@@ -75,8 +97,23 @@ public final class ChatView extends AnchorPane {
         });
     }
 
+    public void setMessageSendAction(MessageSendAction action) {
+        messageTextArea.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() != KeyCode.ENTER) return;
+            if (event.isControlDown() || event.isShiftDown()) {
+                messageTextArea.appendText(LINE_SEPARATOR);
+                return;
+            }
+            event.consume();
+            String text = messageTextArea.getText();
+            messageTextArea.clear();
+            action.doAction(text);
+        });
+    }
+
     public void addMessage(String sender, String message) {
-        messageHistoryVBox.getChildren().add(new TextMessage(sender + ":" + System.lineSeparator() + message));
+        Node node = new TextMessage(sender + ":" + LINE_SEPARATOR + message);
+        messageHistoryVBox.getChildren().add(node);
         messageHistoryScrollPane.setVvalue(1D);
     }
 
