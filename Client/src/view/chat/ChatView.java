@@ -68,6 +68,8 @@ public final class ChatView extends AnchorPane {
     }
 
     private void createListeners() {
+        messageHistoryVBox.heightProperty().addListener(observable -> messageHistoryScrollPane.setVvalue(1D));
+
         messageTextArea.focusedProperty().addListener(observable -> usersLabel.setFocusTraversable(false));
         messageTextArea.setOnKeyReleased(event -> {
             if (event.getCode() != KeyCode.ESCAPE) return;
@@ -114,7 +116,6 @@ public final class ChatView extends AnchorPane {
     public void addMessage(String sender, String message) {
         Node node = new TextMessage(sender + ":" + LINE_SEPARATOR + message);
         messageHistoryVBox.getChildren().add(node);
-        messageHistoryScrollPane.setVvalue(1D);
     }
 
     public void setUsers(List<String> users) {
