@@ -1,4 +1,4 @@
-﻿package it.menzani.groupchat.client.view.chat;
+package it.menzani.groupchat.client.view.chat;
 
 import it.menzani.groupchat.client.App;
 import javafx.application.Platform;
@@ -10,6 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +56,7 @@ public final class ChatView extends AnchorPane {
 
     private void generateLoad() {
         Platform.runLater(() -> {
-            final List<String> users = List.of("Ezechiele", "Gertrude", "Amilcare", "Camilla", "Barbara", "Marco",
+            final List<String> users = Arrays.asList("Ezechiele", "Gertrude", "Amilcare", "Camilla", "Barbara", "Marco",
                     "Gioacchino", "Amelia", "Narciso", "Lollo", "Carla", "Valentina", "John", "Bill");
             setUsers(users);
 
