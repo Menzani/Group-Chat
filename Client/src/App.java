@@ -59,9 +59,9 @@ public final class App extends Application {
         } else {
             primaryStage.hide();
             scene.setRoot(root);
-            packPrimaryStage();
             primaryStage.centerOnScreen();
         }
+        packPrimaryStage();
         primaryStage.show();
     }
 
