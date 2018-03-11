@@ -1,4 +1,4 @@
-package it.menzani.groupchat.client.view.connectionDialog;
+package it.menzani.groupchat.client.view.connectiondialog;
 
 import it.menzani.groupchat.client.App;
 import javafx.beans.InvalidationListener;

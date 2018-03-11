@@ -1,9 +1,9 @@
 package it.menzani.groupchat.client.controller;
 
 import it.menzani.groupchat.client.App;
-import it.menzani.groupchat.client.view.connectionDialog.Component;
-import it.menzani.groupchat.client.view.connectionDialog.ConnectionDialogView;
-import it.menzani.groupchat.client.view.connectionDialog.Result;
+import it.menzani.groupchat.client.view.connectiondialog.Component;
+import it.menzani.groupchat.client.view.connectiondialog.ConnectionDialogView;
+import it.menzani.groupchat.client.view.connectiondialog.Result;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 

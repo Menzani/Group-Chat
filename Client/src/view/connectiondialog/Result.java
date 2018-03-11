@@ -1,4 +1,4 @@
-package it.menzani.groupchat.client.view.connectionDialog;
+package it.menzani.groupchat.client.view.connectiondialog;
 
 public final class Result {
     private static final RuntimeException INSTANCE_NOT_ERROR =

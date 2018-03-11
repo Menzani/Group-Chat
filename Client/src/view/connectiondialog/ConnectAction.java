@@ -1,4 +1,4 @@
-package it.menzani.groupchat.client.view.connectionDialog;
+package it.menzani.groupchat.client.view.connectiondialog;
 
 @FunctionalInterface
 public interface ConnectAction {
