@@ -1,9 +1,10 @@
 package it.menzani.groupchat.protocol.primitives;
 
+import it.menzani.groupchat.protocol.BufferedDataInput;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public final class List<T extends Primitive> extends Primitive {
@@ -37,11 +38,11 @@ public final class List<T extends Primitive> extends Primitive {
     }
 
     @Override
-    public void deserialize(DataInput in, InputStream stream) throws IOException {
+    public void deserialize(DataInput in) throws IOException {
         javaList = new ArrayList<>();
-        while (isNotEndOfData(in, stream)) {
+        while (isNotEndOfData((BufferedDataInput) in)) {
             T element = newElement();
-            element.deserialize(in, stream);
+            element.deserialize(in);
             javaList.add(element);
         }
     }

@@ -1,10 +1,12 @@
 package it.menzani.groupchat.protocol.primitives;
 
+import it.menzani.groupchat.protocol.BufferedDataInputStream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,13 +29,13 @@ class ListTest {
     @Test
     void serialize() throws IOException {
         List<String> list = new List<>(javaList);
-        list.serializeStream(stream);
+        list.serialize(new DataOutputStream(stream));
     }
 
     @Test
     void deserialize() throws IOException {
         List<String> list = new List<>(String.class);
-        list.deserializeStream(new ByteArrayInputStream(stream.toByteArray()));
+        list.deserialize(new BufferedDataInputStream(new ByteArrayInputStream(stream.toByteArray())));
 
         assertEquals(javaList, list.asJavaList());
     }

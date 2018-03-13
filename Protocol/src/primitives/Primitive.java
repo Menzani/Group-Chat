@@ -1,8 +1,10 @@
 package it.menzani.groupchat.protocol.primitives;
 
+import it.menzani.groupchat.protocol.BufferedDataInput;
 import it.menzani.groupchat.protocol.Serializable;
 
-import java.io.*;
+import java.io.DataOutput;
+import java.io.IOException;
 
 abstract class Primitive implements Serializable {
     private final char endOfData;
@@ -11,11 +13,11 @@ abstract class Primitive implements Serializable {
         this.endOfData = endOfData;
     }
 
-    boolean isNotEndOfData(DataInput in, InputStream stream) throws IOException {
-        stream.mark(2);
+    boolean isNotEndOfData(BufferedDataInput in) throws IOException {
+        in.mark(2);
         boolean result = in.readChar() != endOfData;
         if (result) {
-            stream.reset();
+            in.reset();
         }
         return result;
     }

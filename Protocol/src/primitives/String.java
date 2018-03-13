@@ -1,9 +1,10 @@
 package it.menzani.groupchat.protocol.primitives;
 
+import it.menzani.groupchat.protocol.BufferedDataInput;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.InputStream;
 
 public final class String extends Primitive {
     private java.lang.String javaString;
@@ -28,9 +29,9 @@ public final class String extends Primitive {
     }
 
     @Override
-    public void deserialize(DataInput in, InputStream stream) throws IOException {
+    public void deserialize(DataInput in) throws IOException {
         StringBuilder builder = new StringBuilder();
-        while (isNotEndOfData(in, stream)) {
+        while (isNotEndOfData((BufferedDataInput) in)) {
             builder.append(in.readChar());
         }
         javaString = builder.toString();
