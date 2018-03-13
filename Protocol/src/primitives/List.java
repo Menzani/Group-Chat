@@ -8,8 +8,11 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public final class List<T extends Primitive> extends Primitive {
+    public static final List<?> EMPTY = new List<>(Collections.emptyList());
+
     private Class<T> elementsClass;
     private java.util.List<T> javaList;
 

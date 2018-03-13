@@ -9,6 +9,8 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public final class String extends Primitive {
+    public static final String EMPTY = new String("");
+
     private java.lang.String javaString;
 
     @Deserialize
