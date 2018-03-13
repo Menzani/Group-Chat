@@ -1,6 +1,8 @@
 package it.menzani.groupchat.protocol.primitives;
 
-import it.menzani.groupchat.protocol.BufferedDataInput;
+import it.menzani.groupchat.protocol.io.BufferedDataInput;
+import it.menzani.groupchat.protocol.io.Deserialize;
+import it.menzani.groupchat.protocol.io.Serialize;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -9,10 +11,12 @@ import java.io.IOException;
 public final class String extends Primitive {
     private java.lang.String javaString;
 
+    @Deserialize
     public String() {
         super('§');
     }
 
+    @Serialize
     public String(java.lang.String javaString) {
         this();
         this.javaString = javaString;

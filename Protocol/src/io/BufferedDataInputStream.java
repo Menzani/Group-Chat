@@ -1,4 +1,4 @@
-package it.menzani.groupchat.protocol;
+package it.menzani.groupchat.protocol.io;
 
 import org.jetbrains.annotations.NotNull;
 

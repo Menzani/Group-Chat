@@ -1,6 +1,8 @@
 package it.menzani.groupchat.protocol.primitives;
 
-import it.menzani.groupchat.protocol.BufferedDataInput;
+import it.menzani.groupchat.protocol.io.BufferedDataInput;
+import it.menzani.groupchat.protocol.io.Deserialize;
+import it.menzani.groupchat.protocol.io.Serialize;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -15,11 +17,13 @@ public final class List<T extends Primitive> extends Primitive {
         super('ç');
     }
 
+    @Deserialize
     public List(Class<T> elementsClass) {
         this();
         this.elementsClass = elementsClass;
     }
 
+    @Serialize
     public List(java.util.List<T> javaList) {
         this();
         this.javaList = javaList;

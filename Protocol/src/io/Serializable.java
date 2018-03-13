@@ -1,4 +1,4 @@
-package it.menzani.groupchat.protocol;
+package it.menzani.groupchat.protocol.io;
 
 import java.io.DataInput;
 import java.io.DataOutput;

@@ -1,7 +1,7 @@
 package it.menzani.groupchat.protocol.primitives;
 
-import it.menzani.groupchat.protocol.BufferedDataInput;
-import it.menzani.groupchat.protocol.Serializable;
+import it.menzani.groupchat.protocol.io.BufferedDataInput;
+import it.menzani.groupchat.protocol.io.Serializable;
 
 import java.io.DataOutput;
 import java.io.IOException;

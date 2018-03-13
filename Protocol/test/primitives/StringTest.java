@@ -1,6 +1,6 @@
 package it.menzani.groupchat.protocol.primitives;
 
-import it.menzani.groupchat.protocol.BufferedDataInputStream;
+import it.menzani.groupchat.protocol.io.BufferedDataInputStream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
