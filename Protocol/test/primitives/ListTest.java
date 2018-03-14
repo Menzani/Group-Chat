@@ -22,7 +22,7 @@ class ListTest {
     @Test
     @DisplayName("Serialize/deserialize empty list")
     void emptyList() throws IOException {
-        List<?> list = List.EMPTY;
+        List<?> list = List.empty();
         list.serialize(dataIOFactory.output());
 
         assertEquals(
