@@ -1,38 +1,60 @@
 package it.menzani.groupchat.protocol.primitives;
 
-import it.menzani.groupchat.protocol.io.BufferedDataInputStream;
-import org.junit.jupiter.api.BeforeAll;
+import it.menzani.groupchat.protocol.io.PipedDataIOFactory;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StringTest {
-    private static java.lang.String javaString;
-    private static ByteArrayOutputStream stream;
+    private PipedDataIOFactory dataIOFactory;
 
-    @BeforeAll
-    static void initAll() {
-        javaString = UUID.randomUUID().toString();
-        stream = new ByteArrayOutputStream();
+    @BeforeEach
+    void init() {
+        dataIOFactory = new PipedDataIOFactory();
     }
 
     @Test
-    void serialize() throws IOException {
-        String string = new String(javaString);
-        string.serialize(new DataOutputStream(stream));
+    @DisplayName("Serialize/deserialize empty string")
+    void emptyString() throws IOException {
+        String string = String.EMPTY;
+        string.serialize(dataIOFactory.output());
+
+        assertEquals(
+                Character.toString(string.getEndOfData()),
+                dataIOFactory.outputToString()
+        );
+
+        String _string = new String();
+        _string.deserialize(dataIOFactory.input());
+
+        assertEquals(string.asJavaString(), _string.asJavaString());
+        assertEquals(string, _string);
     }
 
     @Test
-    void deserialize() throws IOException {
-        String string = new String();
-        string.deserialize(new BufferedDataInputStream(new ByteArrayInputStream(stream.toByteArray())));
+    @DisplayName("Serialize/deserialize 36-characters string")
+    void _36_CharactersString() throws IOException {
+        String string = randomString();
+        string.serialize(dataIOFactory.output());
 
-        assertEquals(javaString, string.asJavaString());
+        assertEquals(
+                string.asJavaString() + string.getEndOfData(),
+                dataIOFactory.outputToString()
+        );
+
+        String _string = new String();
+        _string.deserialize(dataIOFactory.input());
+
+        assertEquals(string.asJavaString(), _string.asJavaString());
+        assertEquals(string, _string);
+    }
+
+    static String randomString() {
+        return new String(UUID.randomUUID().toString());
     }
 }

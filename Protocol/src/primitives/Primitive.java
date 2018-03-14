@@ -13,6 +13,10 @@ abstract class Primitive implements Serializable {
         this.endOfData = endOfData;
     }
 
+    char getEndOfData() {
+        return endOfData;
+    }
+
     boolean isNotEndOfData(BufferedDataInput in) throws IOException {
         in.mark(2);
         boolean result = in.readChar() != endOfData;

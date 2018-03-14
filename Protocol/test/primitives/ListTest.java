@@ -1,42 +1,78 @@
 package it.menzani.groupchat.protocol.primitives;
 
-import it.menzani.groupchat.protocol.io.BufferedDataInputStream;
-import org.junit.jupiter.api.BeforeAll;
+import it.menzani.groupchat.protocol.io.PipedDataIOFactory;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ListTest {
-    private static java.util.List<String> javaList;
-    private static ByteArrayOutputStream stream;
+    private PipedDataIOFactory dataIOFactory;
 
-    @BeforeAll
-    static void initAll() {
-        javaList = Stream.generate(() -> new String(UUID.randomUUID().toString()))
-                .limit(2)
-                .collect(Collectors.toList());
-        stream = new ByteArrayOutputStream();
+    @BeforeEach
+    void init() {
+        dataIOFactory = new PipedDataIOFactory();
     }
 
     @Test
-    void serialize() throws IOException {
-        List<String> list = new List<>(javaList);
-        list.serialize(new DataOutputStream(stream));
+    @DisplayName("Serialize/deserialize empty list")
+    void emptyList() throws IOException {
+        List<?> list = List.EMPTY;
+        list.serialize(dataIOFactory.output());
+
+        assertEquals(
+                Character.toString(list.getEndOfData()),
+                dataIOFactory.outputToString()
+        );
+
+        List<?> _list = new List<>(Primitive.class);
+        _list.deserialize(dataIOFactory.input());
+
+        assertEquals(list.asJavaList(), _list.asJavaList());
+        assertEquals(list, _list);
     }
 
     @Test
-    void deserialize() throws IOException {
-        List<String> list = new List<>(String.class);
-        list.deserialize(new BufferedDataInputStream(new ByteArrayInputStream(stream.toByteArray())));
+    @DisplayName("Serialize/deserialize singleton list of string")
+    void singletonStringList() throws IOException {
+        String string = StringTest.randomString();
+        List<String> list = new List<>(Collections.singletonList(string));
+        list.serialize(dataIOFactory.output());
 
-        assertEquals(javaList, list.asJavaList());
+        assertEquals(
+                string.asJavaString() + string.getEndOfData() + list.getEndOfData(),
+                dataIOFactory.outputToString()
+        );
+
+        List<String> _list = new List<>(String.class);
+        _list.deserialize(dataIOFactory.input());
+
+        assertEquals(list.asJavaList(), _list.asJavaList());
+        assertEquals(list, _list);
+    }
+
+    @Test
+    @DisplayName("Serialize/deserialize two-elements list of string")
+    void twoElementsStringList() throws IOException {
+        String string0 = StringTest.randomString();
+        String string1 = StringTest.randomString();
+        List<String> list = new List<>(Arrays.asList(string0, string1));
+        list.serialize(dataIOFactory.output());
+
+        assertEquals(
+                string0.asJavaString() + string0.getEndOfData() + string1.asJavaString() + string1.getEndOfData() + list.getEndOfData(),
+                dataIOFactory.outputToString()
+        );
+
+        List<String> _list = new List<>(String.class);
+        _list.deserialize(dataIOFactory.input());
+
+        assertEquals(list.asJavaList(), _list.asJavaList());
+        assertEquals(list, _list);
     }
 }
