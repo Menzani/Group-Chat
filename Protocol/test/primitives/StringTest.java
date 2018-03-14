@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class StringTest {
+public class StringTest {
     private PipedDataIOFactory dataIOFactory;
 
     @BeforeEach
@@ -54,7 +54,7 @@ class StringTest {
         assertEquals(string, _string);
     }
 
-    static String randomString() {
+    public static String randomString() {
         return new String(UUID.randomUUID().toString());
     }
 }

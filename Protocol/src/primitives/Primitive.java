@@ -13,7 +13,7 @@ abstract class Primitive implements Serializable {
         this.endOfData = endOfData;
     }
 
-    char getEndOfData() {
+    public char getEndOfData() {
         return endOfData;
     }
 

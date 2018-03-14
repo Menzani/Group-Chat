@@ -13,6 +13,10 @@ abstract class Packet implements Serializable {
         this.opCode = opCode;
     }
 
+    OpCode getOpCode() {
+        return opCode;
+    }
+
     public boolean matches(int value) {
         return value == opCode.getValue();
     }
