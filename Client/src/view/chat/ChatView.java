@@ -48,7 +48,7 @@ public final class ChatView extends AnchorPane {
         setRightAnchor(usersLabel, 100D);
 
         messageHistoryScrollPane.setFitToWidth(true);
-        messageHistoryScrollPane.getStylesheets().add("whiteScrollPane.css");
+        messageHistoryScrollPane.getStylesheets().add(App.resolvePath("whiteScrollPane.css"));
 
         messageTextArea.setFont(App.CUSTOM_FONT);
         messageTextArea.setPrefRowCount(1);

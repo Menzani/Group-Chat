@@ -15,6 +15,10 @@ import java.io.InputStream;
 public final class App extends Application {
     public static Font CUSTOM_FONT = Font.font("Source Sans Pro", 13D);
 
+    public static String resolvePath(String path) {
+        return App.class.getPackage().getName().replace('.', '/') + '/' + path;
+    }
+
     private Stage primaryStage;
 
     @Override
