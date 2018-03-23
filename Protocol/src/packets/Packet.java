@@ -17,10 +17,6 @@ abstract class Packet implements Serializable {
         return opCode;
     }
 
-    public boolean matches(int value) {
-        return value == opCode.getValue();
-    }
-
     void writeOpCode(DataOutput out) throws IOException {
         out.writeInt(opCode.getValue());
     }

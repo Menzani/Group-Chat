@@ -20,6 +20,11 @@ public final class Ok extends Packet {
     }
 
     @Serialize
+    public static Ok simple() {
+        return new Ok(List.empty());
+    }
+
+    @Serialize
     public Ok(@NotNull List<String> onlineUsers) {
         this();
         this.onlineUsers = onlineUsers;

@@ -25,11 +25,10 @@ class UserLeaveTest {
     @DisplayName("Serialize/deserialize USER_LEAVE packet, self variant (empty username)")
     void self() throws IOException {
         UserLeave userLeave = UserLeave.self();
-        String username = userLeave.getUsername();
         userLeave.serialize(dataIOFactory.output());
 
         assertTrue(dataIOFactory.outputToString().endsWith(
-                Character.toString(username.getEndOfData())));
+                Character.toString(userLeave.getUsername().getEndOfData())));
 
         UserLeave _userLeave = new UserLeave();
         DataInput in = dataIOFactory.input();

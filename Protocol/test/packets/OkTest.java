@@ -24,14 +24,13 @@ class OkTest {
     }
 
     @Test
-    @DisplayName("Serialize/deserialize OK packet with no online users")
+    @DisplayName("Serialize/deserialize OK packet, simple variant (no online users)")
     void noOnlineUsers() throws IOException {
-        List<String> onlineUsers = List.empty();
-        Ok ok = new Ok(onlineUsers);
+        Ok ok = Ok.simple();
         ok.serialize(dataIOFactory.output());
 
         assertTrue(dataIOFactory.outputToString().endsWith(
-                Character.toString(onlineUsers.getEndOfData())));
+                Character.toString(ok.getOnlineUsers().getEndOfData())));
 
         Ok _ok = new Ok();
         DataInput in = dataIOFactory.input();
